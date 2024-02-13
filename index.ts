@@ -3,7 +3,7 @@
 var program = require('commander');
 var fs = require('fs');
 var path = require('path');
-var pdf = require('html-pdf-chrome');
+var htmlPdf = require('html-pdf-chrome');
 
 program
   .option(
@@ -37,13 +37,21 @@ if (program.output) {
 
 
 let html = fs.readFileSync(source, 'utf8');
-let options = { format: 'portrait' };
+let options = { format: 'portrait',
+                chromeFlags: [
+                  '--disable-gpu',
+                  '--headless',
+                  '--hide-scrollbars',
+                  '--disable-dev-shm-usage'
+                ],
+                completionTrigger: new htmlPdf.CompletionTrigger.Timer(60000), // milliseconds
+               };
 
 if (output) {
   try {
-    pdf.create(html, options).then(pdf => pdf.toFile(output)).catch((err, res) => {
-        if (err) return console.log(err);
-        console.log(res);
+    htmlPdf.create(html, options).then((htmlPdf) => htmlPdf.toFile(output)).catch((err, res) => {
+      if (err) return console.log(err);
+      console.log(res);
     });
   } catch (err) {
     console.log(err);
