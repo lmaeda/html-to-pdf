@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^4.1.1",
-    "fs": "^0.0.1-security",
+    "fs": "^0.0.2",
     "html-pdf-chrome": "^0.8.4"
   },
   "bin": {
